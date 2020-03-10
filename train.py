@@ -40,7 +40,10 @@ if __name__ == "__main__":
         for iteration, batch in enumerate(tqdm(train_dataloader)):
 
             # unpacking
+            
             sequences, seq_lens, labels, bow_rep = batch
+            if sequences.shape[0] < mconfig.batch_size):
+                continue
             if use_cuda:
                 sequences = sequences.cuda()
                 seq_lens = seq_lens.cuda()
