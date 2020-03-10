@@ -63,9 +63,9 @@ class ModelConfig:
     def __init__(self):
         # vocab size after including special tokens
         self.vocab_size = 9203
-        self.epochs = 20
+        self.epochs = 1
         # batch setting
-        self.batch_size = 128
+        self.batch_size = 16
         # layer sizes
         self.embedding_size = 300
         self.hidden_dim = 256
