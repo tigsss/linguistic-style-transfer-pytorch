@@ -255,7 +255,7 @@ class AdversarialVAE(nn.Module):
             style_emb: batch of sampled style embeddings of the input sentences,shape = (batch_size,mconfig.style_hidden_dim)
             style_labels: style labels of the corresponding input sentences,shape = (batch_size,2)
         """
-        neg_style_label = torch.LongTensor([0, 1], device=style_emb.device)
+        neg_style_label = torch.cuda.LongTensor([0, 1], device=style_emb.device)
         # Iterate over the style labels
         for idx, label in enumerate(style_labels):
             # Calculate average for negative style
@@ -423,7 +423,7 @@ class AdversarialVAE(nn.Module):
         # Training mode
         if not inference:
             # Prepend the input sentences with <sos> token
-            sos_token_tensor = torch.LongTensor(
+            sos_token_tensor = torch.cuda.LongTensor(
                 [gconfig.predefined_word_index['<sos>']], device=input_sentences.device).unsqueeze(0).repeat(mconfig.batch_size, 1)
             input_sentences = torch.cat(
                 (sos_token_tensor, input_sentences), dim=1)
@@ -452,7 +452,7 @@ class AdversarialVAE(nn.Module):
         # if inference mode is on
         else:
 
-            sos_token_tensor = torch.LongTensor(
+            sos_token_tensor = torch.cuda.LongTensor(
                 [gconfig.predefined_word_index['<sos>']], device=latent_emb.device).unsqueeze(0)
             word_emb = self.embedding(sos_token_tensor)
             hidden_states = torch.zeros(
