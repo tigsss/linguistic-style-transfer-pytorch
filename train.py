@@ -42,7 +42,7 @@ if __name__ == "__main__":
             # unpacking
             
             sequences, seq_lens, labels, bow_rep = batch
-            if sequences.shape[0] < mconfig.batch_size):
+            if sequences.shape[0] < mconfig.batch_size:
                 continue
             if use_cuda:
                 sequences = sequences.cuda()
