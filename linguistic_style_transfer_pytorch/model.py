@@ -425,7 +425,6 @@ class AdversarialVAE(nn.Module):
             # Prepend the input sentences with <sos> token
             sos_token_tensor = torch.tensor(
                 [gconfig.predefined_word_index['<sos>']], device=input_sentences.device, dtype=torch.long).unsqueeze(0).repeat(mconfig.batch_size, 1)
-            print("shapes are" , sos_token_tensor.shape, input_sentences.shape)
             input_sentences = torch.cat(
                 (sos_token_tensor, input_sentences), dim=1)
             sentence_embs = self.dropout(self.embedding(input_sentences))
