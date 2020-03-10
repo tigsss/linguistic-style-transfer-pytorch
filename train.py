@@ -75,7 +75,7 @@ if __name__ == "__main__":
         if not os.path.exists(gconfig.model_save_path):
             os.mkdir(gconfig.model_save_path)
         # save model state
-        torch.save(model.state_dict(), gconfig.model_save_path +
+        torch.save(model.state_dict(), gconfig.model_save_path + 
                    f'/model_epoch_{epoch+1}.pt')
         # save optimizers states
         torch.save({'content_disc': content_disc_opt.state_dict(
