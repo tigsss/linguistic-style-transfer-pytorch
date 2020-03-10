@@ -56,3 +56,8 @@ class Preprocessor():
                         text_file.write(line + "\n")
                         labels_file.write("pos" + "\n")
         print("Processing complete ")
+
+if __name__ == "__main__":
+    print('hi')
+    p = Preprocessor()
+    p.preprocess()

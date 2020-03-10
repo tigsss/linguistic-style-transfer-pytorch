@@ -16,7 +16,7 @@ if __name__ == "__main__":
     mconfig = ModelConfig()
     gconfig = GeneralConfig()
     weights = torch.FloatTensor(np.load(gconfig.word_embedding_path))
-    model = AdversarialVAE(inference=False, weight=weights)
+    model = AdversarialVAE(weight=weights)
     if use_cuda:
         model = model.cuda()
 
