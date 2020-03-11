@@ -2,3 +2,7 @@ env
 linguistic_style_transfer_pytorch.egg-info
 .DS_Store
 .vscode
+*pycache*
+*saved_models*
+*.pt
+*checkpoints*
