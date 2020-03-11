@@ -35,6 +35,7 @@ if __name__ == "__main__":
     vae_and_cls_opt = torch.optim.Adam(
         vae_and_classifier_params, lr=mconfig.autoencoder_lr)
     print("Training started!")
+    losses = [[], [], []]
     for epoch in trange(mconfig.epochs, desc="Epoch"):
 
         for iteration, batch in enumerate(tqdm(train_dataloader)):
@@ -51,6 +52,10 @@ if __name__ == "__main__":
                 bow_rep = bow_rep.cuda()
             content_disc_loss, style_disc_loss, vae_and_cls_loss = model(
                 sequences, seq_lens.squeeze(1), labels, bow_rep, iteration+1, epoch == mconfig.epochs-1)
+
+            losses[0].append(content_disc_loss)
+            losses[1].append(style_disc_loss)
+            losses[2].append(vae_and_cls_loss)
 
             #============== Update Adversary/Discriminator parameters ===========#
             # update content discriminator parametes
@@ -73,6 +78,8 @@ if __name__ == "__main__":
             vae_and_cls_opt.step()
             vae_and_cls_opt.zero_grad()
 
+        print(f'losses: content: {losses[0][-1]}, style: {losses[1][-1]}, vae and cls loss: {losses[2][-1]}')
+
         print("Saving states")
         #================ Saving states ==========================#
         if not os.path.exists(gconfig.model_save_path):
@@ -84,6 +91,9 @@ if __name__ == "__main__":
         torch.save({'content_disc': content_disc_opt.state_dict(
         ), 'style_disc': style_disc_opt.state_dict(), 'vae_and_cls': vae_and_cls_opt.state_dict()}, gconfig.model_save_path+f'/opt_epoch_{epoch+1}.pt')
     # Save approximate estimate of different style embeddings after the last epoch
+    with open('results/losses.pkl', 'wb') as f:
+        pickle.dump(losses, f)
+    
     with open(gconfig.avg_style_emb_path, 'wb') as f:
         pickle.dump(model.avg_style_emb, f)
     print("Training completed!!!")
