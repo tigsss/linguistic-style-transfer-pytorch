@@ -32,15 +32,12 @@ with open(gconfig.i2w_file_path) as f:
 label2index = {'neg': 0, 'pos': 1}
 # Read input sentence
 source_sentence = input("Enter the source sentence: ")
-target_style = input("Enter the target style: pos or neg: ")
+target_style = input("Enter the target style: pos or neg")
 # Get token ids
 token_ids = [word2index.get(word, gconfig.unk_token)
              for word in source_sentence.split()]
 token_ids = torch.LongTensor(token_ids)
 target_style_id = torch.LongTensor(label2index[target_style])
-target_style_id = label2index[target_style]
-print("token ids", token_ids)
-print("target_style_id", target_style_id, target_style, label2index[target_style])
 # Get transfered sentence token ids
 target_tokenids = model.transfer_style(token_ids, target_style_id)
 target_sentence = "".join([index2word.get(idx) for idx in target_tokenids])
