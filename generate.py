@@ -13,7 +13,7 @@ gconfig = GeneralConfig()
 # load word embeddings
 weights = torch.FloatTensor(np.load(gconfig.word_embedding_path))
 # load checkpoint
-model_checkpoint = torch.load('linguistic_style_transfer_pytorch/checkpoints/model_epoch_50.pt')
+model_checkpoint = torch.load('linguistic_style_transfer_pytorch/checkpoints/model_epoch_20.pt')
 # Load model
 model = AdversarialVAE(weight=weights)
 if use_cuda:
