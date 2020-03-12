@@ -514,7 +514,7 @@ class AdversarialVAE(nn.Module):
         sampled_content_emb = self.sample_prior(
             content_emb_mu, content_emb_log_var)
         # Get the approximate estimate of the target style embedding
-        target_style_emb = self.avg_style_emb[style]
+        target_style_emb = self.avg_style_emb[0]
         # Generative embedding
         generative_emb = torch.cat(
             (target_style_emb, sampled_content_emb), axis=1)
