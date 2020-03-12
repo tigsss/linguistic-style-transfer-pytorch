@@ -463,6 +463,7 @@ class AdversarialVAE(nn.Module):
             with torch.no_grad():
                 # Greedily generate new words at a time
                 for idx in range(mconfig.max_seq_len):
+                    print('466', idx, word_emb.shape, hidden_state.shape)
                     hidden_state = self.decoder(word_emb, hidden_state)
                     next_word_probs = nn.Softmax(dim=1)(
                         self.projector(hidden_state))
