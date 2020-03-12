@@ -18,7 +18,7 @@ model = AdversarialVAE(weight=weights)
 model.load_state_dict(model_checkpoint)
 model.eval()
 # Load average style embeddings
-with open(config.avg_style_emb_path, 'rb') as f:
+with open(gconfig.avg_style_emb_path, 'rb') as f:
     avg_style_embeddings = pickle.load(f)
 # set avg_style_emb attribute of the model
 model.avg_style_emb = avg_style_embeddings
