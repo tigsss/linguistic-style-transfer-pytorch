@@ -499,6 +499,8 @@ class AdversarialVAE(nn.Module):
         # pack the sequences to reduce unnecessary computations
         # It requires the sentences to be sorted in descending order to take
         # full advantage
+        print("seq", sequence)
+        print("style" ,style)
 
         embedded_seq = self.embedding(sequence.unsqueeze(0))
         output, final_hidden_state = self.encoder(embedded_seq)
