@@ -7,7 +7,7 @@ import json
 from linguistic_style_transfer_pytorch.config import GeneralConfig
 from linguistic_style_transfer_pytorch.model import AdversarialVAE
 
-
+use_cuda = True if torch.cuda.is_available() else False
 gconfig = GeneralConfig()
 
 # load word embeddings
