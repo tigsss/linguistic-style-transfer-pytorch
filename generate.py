@@ -29,7 +29,7 @@ with open(gconfig.w2i_file_path) as f:
 # load index2word
 with open(gconfig.i2w_file_path) as f:
     index2word = json.load(f)
-label2index = {'pos': 0, 'neg': 1}
+label2index = {'neg': 0, 'pos': 1}
 # Read input sentence
 source_sentence = input("Enter the source sentence: ")
 target_style = input("Enter the target style: pos or neg: ")
