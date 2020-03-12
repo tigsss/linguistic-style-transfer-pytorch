@@ -21,6 +21,7 @@ model.eval()
 # Load average style embeddings
 with open(gconfig.avg_style_emb_path, 'rb') as f:
     avg_style_embeddings = pickle.load(f)
+print("avg style", avg_style_embeddings)
 # set avg_style_emb attribute of the model
 model.avg_style_emb = avg_style_embeddings
 # load word2index
