@@ -223,6 +223,7 @@ class AdversarialVAE(nn.Module):
             mu: embedding of the mean of the Gaussian distribution of the content's latent space
             log_var: embedding of the log of variance of the Gaussian distribution of the content's latent space
         """
+        print("sentence shape is ", sentence.shape)
         mu = self.content_mu(sentence_emb)
         log_var = self.content_log_var(sentence_emb)
 

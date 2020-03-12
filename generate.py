@@ -32,7 +32,7 @@ with open(gconfig.i2w_file_path) as f:
 label2index = {'informal': 0, 'formal': 1}
 # Read input sentence
 source_sentence = input("Enter the source sentence: ")
-target_style = input("Enter the target style: informal or formal")
+target_style = input("Enter the target style: informal or formal: ")
 # Get token ids
 token_ids = [word2index.get(word, gconfig.unk_token)
              for word in source_sentence.split()]
