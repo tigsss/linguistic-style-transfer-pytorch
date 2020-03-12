@@ -224,7 +224,7 @@ class AdversarialVAE(nn.Module):
             log_var: embedding of the log of variance of the Gaussian distribution of the content's latent space
         """
         mu = self.content_mu(sentence_emb.reshape(1,512))
-        log_var = self.content_log_var(sentence_emb)
+        log_var = self.content_log_var(sentence_emb.reshape(1,512))
 
         return mu, log_var
 
