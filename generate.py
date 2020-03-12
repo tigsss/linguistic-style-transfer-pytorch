@@ -21,6 +21,7 @@ model.eval()
 # Load average style embeddings
 with open(gconfig.avg_style_emb_path, 'rb') as f:
     avg_style_embeddings = pickle.load(f)
+print("avg style", avg_style_embeddings)
 # set avg_style_emb attribute of the model
 model.avg_style_emb = avg_style_embeddings
 # load word2index
@@ -31,8 +32,10 @@ with open(gconfig.i2w_file_path) as f:
     index2word = json.load(f)
 label2index = {'neg': 0, 'pos': 1}
 # Read input sentence
-source_sentence = input("Enter the source sentence: ")
-target_style = input("Enter the target style: pos or neg")
+# source_sentence = input("Enter the source sentence: ")
+# target_style = input("Enter the target style: pos or neg")
+source_sentence = "the book was good"
+target_style = "neg"
 # Get token ids
 token_ids = [word2index.get(word, gconfig.unk_token)
              for word in source_sentence.split()]

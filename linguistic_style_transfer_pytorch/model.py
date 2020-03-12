@@ -223,8 +223,8 @@ class AdversarialVAE(nn.Module):
             mu: embedding of the mean of the Gaussian distribution of the content's latent space
             log_var: embedding of the log of variance of the Gaussian distribution of the content's latent space
         """
-        mu = self.content_mu(sentence_emb)
-        log_var = self.content_log_var(sentence_emb)
+        mu = self.content_mu(sentence_emb.reshape(1,512))
+        log_var = self.content_log_var(sentence_emb.reshape(1,512))
 
         return mu, log_var
 
@@ -516,8 +516,8 @@ class AdversarialVAE(nn.Module):
         # Get the approximate estimate of the target style embedding
         target_style_emb = self.avg_style_emb[style]
         # Generative embedding
-        # generative_emb = torch.cat(
-        #     (target_style_emb, sampled_content_emb), axis=1)
+        print("target style", target_style_emb, target_style_emb.shape)
+        print("sampled content", sampled_content_emb, sampled_content_emb.shape)
         generative_emb = torch.cat(
             (target_style_emb, sampled_content_emb)).unsqueeze(0)
         # Generate the style transfered sentences
