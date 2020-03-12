@@ -36,7 +36,7 @@ target_style = input("Enter the target style: pos or neg")
 # Get token ids
 token_ids = [word2index.get(word, gconfig.unk_token)
              for word in source_sentence.split()]
-token_ids = torch.LongTensor(token_ids)
+token_ids = torch.LongTensor([token_ids])
 target_style_id = torch.LongTensor(label2index[target_style])
 # Get transfered sentence token ids
 target_tokenids = model.transfer_style(token_ids, target_style_id)
