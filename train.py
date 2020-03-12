@@ -37,6 +37,9 @@ if __name__ == "__main__":
     print("Training started!")
     losses = [[], [], []]
     for epoch in trange(mconfig.epochs, desc="Epoch"):
+        tot_content_disc_loss = 0.0
+        tot_style_disc_loss = 0.0
+        tot_vae_and_cls_loss = 0.0
 
         for iteration, batch in enumerate(tqdm(train_dataloader)):
 
@@ -52,11 +55,8 @@ if __name__ == "__main__":
                 bow_rep = bow_rep.cuda()
             content_disc_loss, style_disc_loss, vae_and_cls_loss = model(
                 sequences, seq_lens.squeeze(1), labels, bow_rep, iteration+1, epoch == mconfig.epochs-1)
-
-            losses[0].append(content_disc_loss)
-            losses[1].append(style_disc_loss)
-            losses[2].append(vae_and_cls_loss)
-
+	    
+         
             #============== Update Adversary/Discriminator parameters ===========#
             # update content discriminator parametes
             # we need to retain the computation graph so that discriminator predictions are
@@ -77,6 +77,14 @@ if __name__ == "__main__":
             vae_and_cls_loss.backward()
             vae_and_cls_opt.step()
             vae_and_cls_opt.zero_grad()
+
+            tot_content_disc_loss += content_disc_loss.item()
+            tot_style_disc_loss += style_disc_loss.item()
+            tot_vae_and_cls_loss += vae_and_cls_loss.item()
+       
+        losses[0].append(tot_content_disc_loss)
+        losses[1].append(tot_style_disc_loss)
+        losses[2].append(tot_vae_and_cls_loss)
 
         print(f'losses: content: {losses[0][-1]}, style: {losses[1][-1]}, vae and cls loss: {losses[2][-1]}')
 
