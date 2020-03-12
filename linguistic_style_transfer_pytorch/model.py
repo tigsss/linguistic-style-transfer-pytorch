@@ -460,7 +460,7 @@ class AdversarialVAE(nn.Module):
             # Store output sentences
             output_sentence = torch.zeros(
                 mconfig.max_seq_len, 1, device=latent_emb.device)
-            with torch.no_grad:
+            with torch.no_grad():
                 # Greedily generate new words at a time
                 for idx in range(mconfig.max_seq_len):
                     hidden_state = self.decoder(word_emb, hidden_state)
