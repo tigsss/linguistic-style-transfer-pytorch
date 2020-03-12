@@ -462,7 +462,7 @@ class AdversarialVAE(nn.Module):
             hidden_state = torch.zeros(
                 1, mconfig.hidden_dim, device=latent_emb.device)
             # Store output sentences
-            output_sentence = torch.zeros(
+            output_sentences = torch.zeros(
                 mconfig.max_seq_len, 1, device=latent_emb.device)
             with torch.no_grad():
                 # Greedily generate new words at a time
@@ -472,13 +472,11 @@ class AdversarialVAE(nn.Module):
                     next_word_probs = nn.Softmax(dim=1)(
                         self.projector(hidden_state))
                     next_word = next_word_probs.argmax(1)
-                    output_sentence[idx] = next_word
+                    output_sentences[idx] = next_word
                     word_emb = self.embedding(next_word)
-                    word_emb = word_emb.squeeze(0)
                     gen_sent_emb = torch.cat(
                         (word_emb, latent_emb), dim=1)
-
-
+        print(output_sentences)
         return output_sentences
 
     def get_recon_loss(self, output_logits, input_sentences):
