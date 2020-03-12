@@ -518,8 +518,7 @@ class AdversarialVAE(nn.Module):
         # Generative embedding
         print("target style", target_style_emb, target_style_emb.shape)
         print("sampled content", sampled_content_emb, sampled_content_emb.shape)
-        generative_emb = torch.cat(
-            (target_style_emb, sampled_content_emb)).unsqueeze(0)
+        generative_emb = torch.cat(target_style_emb, sampled_content_emb).unsqueeze(0)
         # Generate the style transfered sentences
         transfered_sentence = self.generate_sentences(
             input_sentences=None, latent_emb=generative_emb, inference=True)
