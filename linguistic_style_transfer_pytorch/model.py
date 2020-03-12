@@ -457,7 +457,7 @@ class AdversarialVAE(nn.Module):
             word_emb = self.embedding(sos_token_tensor)
             word_emb = word_emb.squeeze(0)
             gen_sent_emb = torch.cat(
-                (sentence_embs, latent_emb), dim=1)
+                (word_emb, latent_emb), dim=1)
 
             hidden_state = torch.zeros(
                 1, mconfig.hidden_dim, device=latent_emb.device)
@@ -476,7 +476,7 @@ class AdversarialVAE(nn.Module):
                     word_emb = self.embedding(next_word)
                     word_emb = word_emb.squeeze(0)
                     gen_sent_emb = torch.cat(
-                        (sentence_embs, latent_emb), dim=1)
+                        (word_emb, latent_emb), dim=1)
 
 
         return output_sentences
