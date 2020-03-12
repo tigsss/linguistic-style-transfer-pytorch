@@ -454,7 +454,6 @@ class AdversarialVAE(nn.Module):
 
             sos_token_tensor = torch.tensor(
                 [gconfig.predefined_word_index['<sos>']], device=latent_emb.device, dtype=torch.long).unsqueeze(0)
-            print("sos", sos_token_tensor, sos_token_tensor.shape)
             word_emb = self.embedding(sos_token_tensor)
             hidden_state = torch.zeros(
                 1, mconfig.hidden_dim, device=latent_emb.device)
@@ -464,6 +463,7 @@ class AdversarialVAE(nn.Module):
             with torch.no_grad():
                 # Greedily generate new words at a time
                 for idx in range(mconfig.max_seq_len):
+                    print(idx)
                     hidden_state = self.decoder(word_emb, hidden_state)
                     next_word_probs = nn.Softmax(dim=1)(
                         self.projector(hidden_state))
