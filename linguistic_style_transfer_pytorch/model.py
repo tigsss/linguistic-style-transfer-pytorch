@@ -466,14 +466,14 @@ class AdversarialVAE(nn.Module):
             sos_word_emb = self.embedding(sos_token_tensor)
             sos_word_emb = sos_word_emb.squeeze(0)
 
-            eos_token_tensor = torch.tensor(
-                [gconfig.predefined_word_index['<eos>']], device=latent_emb.device, dtype=torch.long).unsqueeze(0)
-            eos_word_emb = self.embedding(eos_token_tensor)
-            eos_word_emb = eos_word_emb.squeeze(0)
+            # eos_token_tensor = torch.tensor(
+            #     [gconfig.predefined_word_index['<eos>']], device=latent_emb.device, dtype=torch.long).unsqueeze(0)
+            # eos_word_emb = self.embedding(eos_token_tensor)
+            # eos_word_emb = eos_word_emb.squeeze(0)
 
             print(sos_word_emb.shape, latent_emb.shape)
             gen_sent_emb = torch.cat(
-                (sos_word_emb, latent_emb, eos_word_emb), dim=1)
+                (sos_word_emb, latent_emb), dim=1)
 
             hidden_state = torch.zeros(
                 1, mconfig.hidden_dim, device=latent_emb.device)

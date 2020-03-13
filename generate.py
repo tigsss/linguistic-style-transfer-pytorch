@@ -42,6 +42,7 @@ target_style = "pos"
 # Get token ids
 token_ids = [word2index.get(word, gconfig.unk_token)
              for word in source_sentence.split()]
+token_ids.append(word2index.get('<eos>', gconfig.unk_token))
 token_ids = torch.tensor(token_ids, dtype=torch.long).cuda()
 # target_style_id = torch.tensor(label2index[target_style], dtype=torch.long)
 target_style_id = label2index[target_style]
