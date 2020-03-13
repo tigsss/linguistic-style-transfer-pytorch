@@ -54,7 +54,7 @@ class Preprocessor():
                     line = self._clean_text(line)
                     if len(line) > 0:
                         text_file.write(line + "\n")
-                        labels_file.write("pos" + "\n")
+                        labels_file.write("neg" + "\n")
         print("Processing complete ")
 
 if __name__ == "__main__":
