@@ -50,6 +50,7 @@ class GeneralConfig:
             "<pad>": 0,
             "<sos>": 1,
             "<unk>": 2,
+            "<eos>": 3,
         }
         self.filter_sentiment_words = True
         self.filter_stopwords = True

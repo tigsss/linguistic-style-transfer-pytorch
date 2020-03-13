@@ -428,17 +428,20 @@ class AdversarialVAE(nn.Module):
             # Prepend the input sentences with <sos> token
             sos_token_tensor = torch.tensor(
                 [gconfig.predefined_word_index['<sos>']], device=input_sentences.device, dtype=torch.long).unsqueeze(0).repeat(mconfig.batch_size, 1)
+            eos_token_tensor = torch.tensor(
+                [gconfig.predefined_word_index['<eos>']], device=input_sentences.device, dtype=torch.long).unsqueeze(0).repeat(mconfig.batch_size, 1)
             input_sentences = torch.cat(
-                (sos_token_tensor, input_sentences), dim=1)
+                (sos_token_tensor, input_sentences, eos_token_tensor), dim=1)
+            
             sentence_embs = self.dropout(self.embedding(input_sentences))
             # Make the latent embedding compatible for concatenation
-            # by repeating it for max_seq_len + 1(additional one bcoz <sos> tokens were added)
+            # by repeating it for max_seq_len + 2(additional one bcoz <sos> and <eos> tokens were added)
             latent_emb = latent_emb.unsqueeze(1).repeat(
-                1, mconfig.max_seq_len+1, 1)
+                1, mconfig.max_seq_len+2, 1)
             gen_sent_embs = torch.cat(
                 (sentence_embs, latent_emb), dim=2)
             # Delete latent embedding and sos token tensor to reduce memory usage
-            del latent_emb, sos_token_tensor
+            del latent_emb, sos_token_tensor, eos_token_tensor
             output_sentences = torch.zeros(
                 mconfig.max_seq_len, mconfig.batch_size, mconfig.vocab_size, device=input_sentences.device)
             # initialize hidden state
