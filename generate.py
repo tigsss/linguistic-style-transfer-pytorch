@@ -13,7 +13,7 @@ gconfig = GeneralConfig()
 # load word embeddings
 weights = torch.FloatTensor(np.load(gconfig.word_embedding_path))
 # load checkpoint
-model_checkpoint = torch.load('linguistic_style_transfer_pytorch/checkpoints/model_epoch_50.pt')
+model_checkpoint = torch.load('linguistic_style_transfer_pytorch/checkpoints/model_epoch_1.pt')
 # Load model
 model = AdversarialVAE(weight=weights)
 if use_cuda:
@@ -37,7 +37,7 @@ label2index = {'neg': 0, 'pos': 1}
 # source_sentence = input("Enter the source sentence: ")
 # target_style = input("Enter the target style: pos or neg")
 source_sentence = "the book was good"
-target_style = "neg"
+target_style = "pos"
 # Get token ids
 token_ids = [word2index.get(word, gconfig.unk_token)
              for word in source_sentence.split()]
@@ -46,5 +46,5 @@ token_ids = torch.tensor(token_ids, dtype=torch.long).cuda()
 target_style_id = label2index[target_style]
 # Get transfered sentence token ids
 target_tokenids = model.transfer_style(token_ids, target_style_id)
-target_sentence = "".join([index2word.get(idx) for idx in target_tokenids])
+target_sentence = " ".join([index2word.get(str(int(idx))) for idx in target_tokenids])
 print("Style transfered sentence: {}".format(target_sentence))

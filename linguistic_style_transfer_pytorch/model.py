@@ -223,8 +223,10 @@ class AdversarialVAE(nn.Module):
             mu: embedding of the mean of the Gaussian distribution of the content's latent space
             log_var: embedding of the log of variance of the Gaussian distribution of the content's latent space
         """
-        mu = self.content_mu(sentence_emb.reshape(1,512))
-        log_var = self.content_log_var(sentence_emb.reshape(1,512))
+        # mu = self.content_mu(sentence_emb.reshape(1,512))
+        # log_var = self.content_log_var(sentence_emb.reshape(1,512))
+        mu = self.content_mu(sentence_emb)
+        log_var = self.content_log_var(sentence_emb)
 
         return mu, log_var
 
@@ -463,23 +465,21 @@ class AdversarialVAE(nn.Module):
             hidden_state = torch.zeros(
                 1, mconfig.hidden_dim, device=latent_emb.device)
             # Store output sentences
-            output_sentence = torch.zeros(
+            output_sentences = torch.zeros(
                 mconfig.max_seq_len, 1, device=latent_emb.device)
             with torch.no_grad():
                 # Greedily generate new words at a time
                 for idx in range(mconfig.max_seq_len):
-                    print('466', idx, gen_sent_emb.shape, hidden_state.shape)
+                    # print('466', idx, gen_sent_emb.shape, hidden_state.shape)
                     hidden_state = self.decoder(gen_sent_emb, hidden_state)
                     next_word_probs = nn.Softmax(dim=1)(
                         self.projector(hidden_state))
                     next_word = next_word_probs.argmax(1)
-                    output_sentence[idx] = next_word
+                    output_sentences[idx] = next_word
                     word_emb = self.embedding(next_word)
-                    word_emb = word_emb.squeeze(0)
                     gen_sent_emb = torch.cat(
                         (word_emb, latent_emb), dim=1)
-
-
+        # print(output_sentences)
         return output_sentences
 
     def get_recon_loss(self, output_logits, input_sentences):
@@ -509,8 +509,8 @@ class AdversarialVAE(nn.Module):
         # pack the sequences to reduce unnecessary computations
         # It requires the sentences to be sorted in descending order to take
         # full advantage
-        print("seq", sequence)
-        print("style" ,style)
+        # print("seq", sequence)
+        # print("style" ,style)
 
         embedded_seq = self.embedding(sequence.unsqueeze(0))
         output, final_hidden_state = self.encoder(embedded_seq)
@@ -526,8 +526,8 @@ class AdversarialVAE(nn.Module):
         # Get the approximate estimate of the target style embedding
         target_style_emb = self.avg_style_emb[style].reshape(1,8)
         # Generative embedding
-        print("target style", target_style_emb, target_style_emb.shape)
-        print("sampled content", sampled_content_emb, sampled_content_emb.shape)
+        # print("target style", target_style_emb, target_style_emb.shape)
+        # print("sampled content", sampled_content_emb, sampled_content_emb.shape)
         generative_emb = torch.cat(
             (target_style_emb, sampled_content_emb), axis=1)
         # Generate the style transfered sentences
