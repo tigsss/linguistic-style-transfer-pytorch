@@ -467,7 +467,7 @@ class AdversarialVAE(nn.Module):
             with torch.no_grad():
                 # Greedily generate new words at a time
                 for idx in range(mconfig.max_seq_len):
-                    print('466', idx, gen_sent_emb.shape, hidden_state.shape)
+                    # print('466', idx, gen_sent_emb.shape, hidden_state.shape)
                     hidden_state = self.decoder(gen_sent_emb, hidden_state)
                     next_word_probs = nn.Softmax(dim=1)(
                         self.projector(hidden_state))
@@ -476,7 +476,7 @@ class AdversarialVAE(nn.Module):
                     word_emb = self.embedding(next_word)
                     gen_sent_emb = torch.cat(
                         (word_emb, latent_emb), dim=1)
-        print(output_sentences)
+        # print(output_sentences)
         return output_sentences
 
     def get_recon_loss(self, output_logits, input_sentences):
@@ -506,8 +506,8 @@ class AdversarialVAE(nn.Module):
         # pack the sequences to reduce unnecessary computations
         # It requires the sentences to be sorted in descending order to take
         # full advantage
-        print("seq", sequence)
-        print("style" ,style)
+        # print("seq", sequence)
+        # print("style" ,style)
 
         embedded_seq = self.embedding(sequence.unsqueeze(0))
         output, final_hidden_state = self.encoder(embedded_seq)
@@ -523,8 +523,8 @@ class AdversarialVAE(nn.Module):
         # Get the approximate estimate of the target style embedding
         target_style_emb = self.avg_style_emb[style].reshape(1,8)
         # Generative embedding
-        print("target style", target_style_emb, target_style_emb.shape)
-        print("sampled content", sampled_content_emb, sampled_content_emb.shape)
+        # print("target style", target_style_emb, target_style_emb.shape)
+        # print("sampled content", sampled_content_emb, sampled_content_emb.shape)
         generative_emb = torch.cat(
             (target_style_emb, sampled_content_emb), axis=1)
         # Generate the style transfered sentences
