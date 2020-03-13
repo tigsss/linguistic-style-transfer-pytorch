@@ -90,13 +90,13 @@ if __name__ == "__main__":
 
         print("Saving states")
         #================ Saving states ==========================#
-        if not os.path.exists(gconfig.model_save_path):
+    if not os.path.exists(gconfig.model_save_path):
             os.mkdir(gconfig.model_save_path)
         # save model state
-        torch.save(model.state_dict(), gconfig.model_save_path + 
+    torch.save(model.state_dict(), gconfig.model_save_path + 
                    f'/model_epoch_{epoch+1}.pt')
         # save optimizers states
-        torch.save({'content_disc': content_disc_opt.state_dict(
+    torch.save({'content_disc': content_disc_opt.state_dict(
         ), 'style_disc': style_disc_opt.state_dict(), 'vae_and_cls': vae_and_cls_opt.state_dict()}, gconfig.model_save_path+f'/opt_epoch_{epoch+1}.pt')
     # Save approximate estimate of different style embeddings after the last epoch
     with open('results/losses.pkl', 'wb') as f:
