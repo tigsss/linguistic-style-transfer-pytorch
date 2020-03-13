@@ -47,13 +47,13 @@ class Preprocessor():
                 for line in reviews_file:
                     line = self._clean_text(line)
                     if len(line) > 0:
-                        text_file.write(line + "<eos>\n")
+                        text_file.write(line + " <eos>\n")
                         labels_file.write("pos" + "\n")
             with open(config.train_neg_reviews_file_path, 'r') as reviews_file:
                 for line in reviews_file:
                     line = self._clean_text(line)
                     if len(line) > 0:
-                        text_file.write(line + "<eos>\n")
+                        text_file.write(line + " <eos>\n")
                         labels_file.write("neg" + "\n")
         print("Processing complete ")
 
