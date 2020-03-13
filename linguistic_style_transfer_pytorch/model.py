@@ -436,8 +436,10 @@ class AdversarialVAE(nn.Module):
             sentence_embs = self.dropout(self.embedding(input_sentences))
             # Make the latent embedding compatible for concatenation
             # by repeating it for max_seq_len + 2(additional one bcoz <sos> and <eos> tokens were added)
+
+            # EOS CHANGE HERE
             latent_emb = latent_emb.unsqueeze(1).repeat(
-                1, mconfig.max_seq_len+2, 1)
+                1, mconfig.max_seq_len+1, 1)
             gen_sent_embs = torch.cat(
                 (sentence_embs, latent_emb), dim=2)
             # Delete latent embedding and sos token tensor to reduce memory usage
