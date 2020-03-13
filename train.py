@@ -49,7 +49,7 @@ if __name__ == "__main__":
             if sequences.shape[0] < mconfig.batch_size:
                 continue
             eos_token_tensor = torch.tensor(
-                [gconfig.predefined_word_index['<eos>']], device=input_sentences.device, dtype=torch.long).unsqueeze(0).repeat(mconfig.batch_size, 1)
+                [gconfig.predefined_word_index['<eos>']], dtype=torch.long).unsqueeze(0).repeat(mconfig.batch_size, 1)
             sequences = torch.cat(
                 (sequences, eos_token_tensor), dim=1)
             if use_cuda:
