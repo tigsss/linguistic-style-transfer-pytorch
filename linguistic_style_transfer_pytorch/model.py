@@ -90,7 +90,8 @@ class AdversarialVAE(nn.Module):
         embedded_seqs = self.dropout(self.embedding(sequences))
         packed_seqs = pack_padded_sequence(
             embedded_seqs, lengths=seq_lengths, batch_first=True)
-        packed_output, (_) = self.encoder(packed_seqs)
+        packed_output, hid_state  = self.encoder(packed_seqs)
+        
         output, _ = pad_packed_sequence(packed_output, batch_first=True)
         sentence_emb = output[torch.arange(output.size(0)), seq_lengths-1]
         # get content and style embeddings from the sentence embeddings,i.e. final_hidden_state
@@ -444,12 +445,15 @@ class AdversarialVAE(nn.Module):
             hidden_states = torch.zeros(
                 mconfig.batch_size, mconfig.hidden_dim, device=input_sentences.device)
             # generate sentences one word at a time in a loop
+            #t = []
             for idx in range(mconfig.max_seq_len):
                 # get words at the index idx from all the batches
                 words = gen_sent_embs[:, idx, :]
                 hidden_states = self.decoder(words, hidden_states)
                 # project over vocab space
                 next_word_logits = self.projector(hidden_states)
+                #test = int(nn.Softmax(dim=1)(next_word_logits).argmax(1)[0])
+                #t.append(test)
                 output_sentences[idx] = next_word_logits
         # if inference mode is on
         else:
@@ -479,7 +483,6 @@ class AdversarialVAE(nn.Module):
                     word_emb = self.embedding(next_word)
                     gen_sent_emb = torch.cat(
                         (word_emb, latent_emb), dim=1)
-        # print(output_sentences)
         return output_sentences
 
     def get_recon_loss(self, output_logits, input_sentences):
@@ -514,7 +517,8 @@ class AdversarialVAE(nn.Module):
 
         embedded_seq = self.embedding(sequence.unsqueeze(0))
         output, final_hidden_state = self.encoder(embedded_seq)
-
+        final_hidden_state = final_hidden_state.reshape(1, 512)
+        
         # get content embeddings
         # Note that we need not calculate style embeddings since we
         # use the target style embedding

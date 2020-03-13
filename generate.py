@@ -36,7 +36,7 @@ label2index = {'neg': 0, 'pos': 1}
 # Read input sentence
 # source_sentence = input("Enter the source sentence: ")
 # target_style = input("Enter the target style: pos or neg")
-source_sentence = "the book was good"
+source_sentence = "the book was good yuh yuh yuh"
 target_style = "pos"
 # Get token ids
 token_ids = [word2index.get(word, gconfig.unk_token)
